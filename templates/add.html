@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Reservation</title>
+</head>
+<body>
+    <h1>Add a New Reservation</h1>
+    <form method="POST">
+        <label>Reservation No:</label>
+        <input type="text" name="reservation_no" required><br><br>
+
+        <label>Date (YYYY-MM-DD):</label>
+        <input type="text" name="date" required><br><br>
+
+        <label>Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label>Status:</label>
+        <select name="status" required>
+            <option value="confirmed">Confirmed</option>
+            <option value="pending">Pending</option>
+        </select><br><br>
+
+        <input type="submit" value="Add Reservation">
+    </form>
+
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+</body>
+</html>
