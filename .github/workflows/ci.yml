@@ -2,19 +2,20 @@ name: Flask CI
 
 on:
   push:
-    branches: - "master"
-    - "feature/*"
-    - "bugfix/*"
-    - "hotfix/*"
-    - "release/*"
+    branches:
+      - "master"
+      - "feature/*"
+      - "bugfix/*"
+      - "hotfix/*"
+      - "release/*"
 
   pull_request:
-    branches:  - "master"
-    - "feature/*"
-    - "bugfix/*"
-    - "hotfix/*"
-    - "release/*"
-
+    branches:
+      - "master"
+      - "feature/*"
+      - "bugfix/*"
+      - "hotfix/*"
+      - "release/*"
 
 jobs:
   build:
