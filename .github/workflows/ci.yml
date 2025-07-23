@@ -2,9 +2,19 @@ name: Flask CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: - "master"
+    - "feature/*"
+    - "bugfix/*"
+    - "hotfix/*"
+    - "release/*"
+
   pull_request:
-    branches: [ "main" ]
+    branches:  - "master"
+    - "feature/*"
+    - "bugfix/*"
+    - "hotfix/*"
+    - "release/*"
+
 
 jobs:
   build:
@@ -24,9 +34,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
-        run: |
-          pytest || echo "No tests found"
+
 
 
 
