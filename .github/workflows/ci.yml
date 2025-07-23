@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "master"
+      - "main"
       - "feature/*"
       - "bugfix/*"
       - "hotfix/*"
@@ -12,6 +13,7 @@ on:
   pull_request:
     branches:
       - "master"
+      - "main"
       - "feature/*"
       - "bugfix/*"
       - "hotfix/*"
@@ -35,7 +37,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-
-
-
+      # Uncomment if you have tests
+      # - name: Run tests
+      #   run: pytest
 
