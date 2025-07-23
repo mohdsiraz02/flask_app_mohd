@@ -16,8 +16,24 @@ def view_reservations():
     c = conn.cursor()
     c.execute("SELECT * FROM reservations")
     rows = c.fetchall()
+
     conn.close()
     return render_template("view.html", reservations=rows)
+
+
+# 🔹 Route to delete a reservation
+@app.route('/delete/<reservation_no>', methods=['POST'])
+def delete_reservation(reservation_no):
+    try:
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute("DELETE FROM reservations WHERE reservation_no = ?", (reservation_no,))
+        conn.commit()
+        conn.close()
+        flash("Reservation deleted successfully!")
+    except Exception as e:
+        flash(f"Error while deleting reservation: {e}")
+    return redirect(url_for('view_reservations'))
 
 # 🔹 Route to add a new reservation
 @app.route('/add', methods=['GET', 'POST'])
