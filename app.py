@@ -16,10 +16,8 @@ def view_reservations():
     c = conn.cursor()
     c.execute("SELECT * FROM reservations")
     rows = c.fetchall()
-
     conn.close()
     return render_template("view.html", reservations=rows)
-
 
 # 🔹 Route to delete a reservation
 @app.route('/delete/<reservation_no>', methods=['POST'])
@@ -39,14 +37,12 @@ def delete_reservation(reservation_no):
 @app.route('/add', methods=['GET', 'POST'])
 def add_reservation():
     if request.method == 'POST':
-        # 💾 Get form data
         reservation_no = request.form.get('reservation_no')
         date = request.form.get('date')
         name = request.form.get('name')
         status = request.form.get('status')
 
         try:
-            # 🛠️ Insert into database
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
             c.execute("INSERT INTO reservations VALUES (?, ?, ?, ?)", 
@@ -54,15 +50,12 @@ def add_reservation():
             conn.commit()
             conn.close()
 
-            # ✅ Show success message & redirect to view page
             flash("Reservation added successfully!")
             return redirect(url_for('view_reservations'))
-
         except Exception as e:
             flash(f"Error while adding reservation: {e}")
             return redirect(url_for('add_reservation'))
 
-    # 🎨 Show form page when GET request
     return render_template("add.html")
 
 # 🔹 Start Flask server
