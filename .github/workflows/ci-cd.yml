@@ -1,5 +1,7 @@
+# .github/workflows/full_stack_ci.yml
+# Yeh file aapke Flask backend aur React frontend dono ke liye Continuous Integration (CI) ko handle karegi.
 
-name: Full-Stack CI (Flask & React)
+name: Full-Stack CI (Flask & React) # Ensure no extra spaces before 'name:' and one space after ':'
 
 on:
   push:
