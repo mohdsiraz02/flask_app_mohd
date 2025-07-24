@@ -1,28 +1,85 @@
-name: Test CI
+# .github/workflows/full_stack_ci.yml
+# Yeh file aapke Flask backend aur React frontend dono ke liye Continuous Integration (CI) ko handle karegi.
 
-on: [push]
+name: Full-Stack CI (Flask & React)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - release/*
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
-  build:
+  # Job for Flask Backend CI/CD
+  build_backend:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Checkout backend repository
+      uses: actions/checkout@v4 # Recommended to use the latest version for security and features
       with:
-        python-version: '3.10'
+        # Agar aapka Flask backend code root directory mein hai, toh path '.' rakhein.
+        # Agar yeh 'backend/' jaise kisi sub-directory mein hai, toh path: './backend' set karein.
+        path: '.' # Assuming Flask backend is in the root or will be handled by working-directory later
 
-    - name: Install dependencies
+    - name: Set up Python environment
+      uses: actions/setup-python@v5 # Recommended to use the latest version
+      with:
+        python-version: '3.10' # Aapke previous configuration ke anusaar
+        cache: 'pip' # Pip dependencies ko cache karein
+
+    - name: Install backend dependencies
+      # Agar aapka backend code 'backend/' folder mein hai, toh working-directory set karein
+      # working-directory: ./backend
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest
+        pip install -r requirements.txt # Ensure requirements.txt root mein ya working-directory mein hai
+        pip install pytest Flask # Pytest aur Flask ko explicitly install karein
 
-    - name: Run Tests
-      run: pytest
+    - name: Run backend tests (pytest)
+      # Agar aapke tests 'backend/' folder mein hain, toh working-directory set karein
+      # working-directory: ./backend
+      run: pytest # Pytest ko run karein
 
     - name: Check Flask App
-      run: python app.py
+      # Is step ko theek kiya gaya hai taaki app background mein run ho aur curl se check ho
+      # Agar aapka app.py 'backend/' folder mein hai, toh working-directory set karein
+      # working-directory: ./backend
+      run: |
+        python app.py & # Flask app ko background mein run karein
+        sleep 5 # Thoda wait karein app ke start hone ke liye
+        curl --fail http://localhost:5000/ || curl --fail http://localhost:5000/status # Root ya status endpoint ko check karein
+
+  # Job for React Frontend CI
+  build_frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout frontend code
+      uses: actions/checkout@v4 # Recommended to use the latest version
+
+    - name: Set up Node.js environment
+      uses: actions/setup-node@v3 # Aapke provide kiye gaye code ke anusaar
+      with:
+        node-version: '18' # Aapke provide kiye gaye code ke anusaar
+        cache: 'npm' # NPM dependencies ko cache karein
+
+    - name: Install frontend dependencies
+      working-directory: ./frontend # Yeh zaroori hai agar React code 'frontend/' folder mein hai
+      run: npm install
+
+    - name: Build frontend application
+      working-directory: ./frontend # Yeh zaroori hai agar React code 'frontend/' folder mein hai
+      run: npm run build
+
+    - name: Upload frontend build artifact
+      uses: actions/upload-artifact@v3 # Aapke provide kiye gaye code ke anusaar
+      with:
+        name: frontend-build
+        path: frontend/build # Yeh path specify karta hai ki kaun si directory ke contents ko upload karna hai
