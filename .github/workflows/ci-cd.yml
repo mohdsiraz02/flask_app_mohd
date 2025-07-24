@@ -1,6 +1,3 @@
-# .github/workflows/full_stack_ci.yml
-# Yeh file aapke Flask backend aur React frontend dono ke liye Continuous Integration (CI) ko handle karegi.
-
 name: Full-Stack CI (Flask & React)
 
 on:
@@ -79,7 +76,7 @@ jobs:
       run: npm run build
 
     - name: Upload frontend build artifact
-      uses: actions/upload-artifact@v3 # Aapke provide kiye gaye code ke anusaar
+      uses: actions/upload-artifact@v4 # <<< Yahaan v3 se v4 kiya gaya hai
       with:
         name: frontend-build
         path: frontend/build # Yeh path specify karta hai ki kaun si directory ke contents ko upload karna hai
