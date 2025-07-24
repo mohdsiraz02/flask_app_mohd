@@ -1,3 +1,4 @@
+
 name: Full-Stack CI (Flask & React)
 
 on:
@@ -50,9 +51,10 @@ jobs:
       # Agar aapka app.py 'backend/' folder mein hai, toh working-directory set karein
       # working-directory: ./backend
       run: |
-        python app.py & # Flask app ko background mein run karein
+        python app.py & # Flask app ko background mein run karein (NOTE THE '&')
         sleep 5 # Thoda wait karein app ke start hone ke liye
         curl --fail http://localhost:5000/ || curl --fail http://localhost:5000/status # Root ya status endpoint ko check karein
+        # 'curl --fail' ensures the step fails if the endpoint is not reachable or returns an error.
 
   # Job for React Frontend CI
   build_frontend:
